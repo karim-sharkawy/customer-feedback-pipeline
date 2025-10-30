@@ -1,0 +1,32 @@
+### Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+venv/
+.env
+*.log
+
+### Notebooks (just for testing)
+.ipynb_checkpoints/
+*.ipynb
+
+### Configuration & Secrets
+config/db_config.json
+config/minio_config.json
+*.yaml
+
+### IDE / OS generated files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+### Docker
+*.pid
+*.tar
