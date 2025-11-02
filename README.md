@@ -13,7 +13,7 @@ This project simulates what real companies use to monitor and understand user se
 * Serve predictions via FastAPI (real-time API)
 * Containerized using Docker (CI/CD-ready)
 
-## 🛠️ Tech Stack (Free / Open Source)
+## 🛠️ Tech Stack (Free/Open Source)
 
 | Layer                  | Tool                    |
 | ---------------------- | ----------------------- |
