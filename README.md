@@ -1,4 +1,4 @@
-# Production-Grade NLP Feedback Intelligence System (MLOps + Transformers)
+# Production ML Platform for NLP Feedback Intelligence
 
 An end-to-end Machine Learning Engineering project that trains, deploys, and monitors transformer-based NLP models for customer feedback understanding at scale.
 
