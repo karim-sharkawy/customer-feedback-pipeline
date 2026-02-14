@@ -19,7 +19,7 @@ venv/
 ### Configuration & Secrets
 config/db_config.json
 config/minio_config.json
-*.yaml
+#*.yaml
 
 ### IDE / OS generated files
 .vscode/
