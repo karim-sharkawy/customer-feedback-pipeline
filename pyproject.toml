@@ -1,0 +1,87 @@
+[build-system]
+requires = ["setuptools>=69", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "customer-feedback-pipeline"
+version = "0.1.0"
+description = "A scalable, end-to-end NLP pipeline for analyzing customer feedback."
+readme = "README.md"
+requires-python = ">=3.12"
+license = {text = "MIT"}
+authors = [
+  { name = "Karim El-Sharkawy" }
+]
+dependencies = [
+  # --- Distributed / data ---
+  "pyspark>=3.5",
+  "pandas>=2.2",
+  "numpy>=1.26",
+
+  # --- NLP / ML ---
+  "transformers>=4.44",
+  "datasets>=2.20",
+  "scikit-learn>=1.4",
+  "tensorflow>=2.16",
+
+  # --- Experiment tracking / registry ---
+  "mlflow>=2.15",
+
+  # --- Serving ---
+  "fastapi>=0.115",
+  "uvicorn[standard]>=0.32",
+  "pydantic>=2.9",
+
+  # --- Storage / metadata ---
+  "boto3>=1.35",              # MinIO via S3 API
+  "psycopg2-binary>=2.9",     # PostgreSQL
+  "sqlalchemy>=2.0",
+
+  # --- Optional UI ---
+  "streamlit>=1.38",
+]
+
+[project.optional-dependencies]
+dev = [
+  "pytest>=8.3",
+  "ruff>=0.6",
+]
+
+llm = [
+  "torch>=2.3",
+  "sentence-transformers>=3.0",
+]
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.ruff]
+line-length = 99
+target-version = "py312"
+extend-exclude = [".venv", "venv", "notebooks"]
+
+[tool.ruff.lint]
+# Conservative ruleset: syntax errors, undefined names, unused imports, obvious bugs.
+select = ["E", "F", "W", "I"]
+ignore = [
+  "E402",  # module-level import not at top of file
+  "E501",  # line length handled by formatter
+  "E731",  # allow lambda assignments
+  #"F841",  # local variable assigned but never used
+  "F405",  # may be undefined from star imports
+  "F403",  # star imports
+]
+
+[tool.ruff.format]
+# Ruff's formatter replaces Black. Same line-length as above.
+quote-style = "double"
+indent-style = "space"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+addopts = "-ra"
+pythonpath = ["src"]
