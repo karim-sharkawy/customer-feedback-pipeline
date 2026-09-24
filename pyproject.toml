@@ -67,7 +67,7 @@ extend-exclude = [".venv", "venv", "notebooks"]
 # Conservative ruleset: syntax errors, undefined names, unused imports, obvious bugs.
 select = ["E", "F", "W", "I"]
 ignore = [
-  "E402",  # module-level import not at top of file
+  #"E402",  # module-level import not at top of file
   "E501",  # line length handled by formatter
   "E731",  # allow lambda assignments
   #"F841",  # local variable assigned but never used
@@ -85,3 +85,5 @@ testpaths = ["tests"]
 python_files = ["test_*.py"]
 addopts = "-ra"
 pythonpath = ["src"]
+
+# python -c "import tomllib; f=open('pyproject.toml','rb'); data=tomllib.load(f); print('\n'.join(data['project']['dependencies']))" > requirements.txt
