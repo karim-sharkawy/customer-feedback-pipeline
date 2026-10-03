@@ -1,42 +1,49 @@
-.PHONY: help install install-dev test lint format clean run-api run-dashboard
+# ─────────────────────────────────────────────────────────────
+# customer-feedback-pipeline
+#
+# Usage:
+#   make setup     first time only — creates venv + installs deps
+#   make ingest    downloads dataset into data/
+#   make explore   opens Jupyter Lab
+#   make test      runs pytest
+#   make clean     nukes venv and downloaded data
+# ─────────────────────────────────────────────────────────────
 
-help:
-	@echo "Targets:"
-	@echo "  install       Install core deps + project (editable)"
-	@echo "  install-dev   Install core + dev deps"
-	@echo "  test          Run pytest"
-	@echo "  lint          Check lint + format (no changes)"
-	@echo "  format        Auto-fix lint + format"
-	@echo "  clean         Remove caches and build artifacts"
-	@echo "  run-api       Start FastAPI server"
-	@echo "  run-dashboard Start Streamlit dashboard"
+VENV := venv
+PY   := $(VENV)/bin/python
 
-install:
-	python -m pip install --upgrade pip
-	pip install -e .
+# Windows uses Scripts/ instead of bin/
+ifeq ($(OS),Windows_NT)
+    PY := $(VENV)/Scripts/python.exe
+endif
 
-install-dev:
-	python -m pip install --upgrade pip
-	pip install -e ".[dev]"
+# .PHONY tells make these aren't real files — always run them,
+# even if a file named "setup" happens to exist.
+.PHONY: setup ingest explore test clean
 
+# Create the venv (if missing) and install the project + dev deps.
+# Safe to re-run: it always re-installs so deps stay in sync
+# with pyproject.toml.
+setup:
+	python -m venv $(VENV)
+	$(PY) -m pip install --upgrade pip
+	$(PY) -m pip install -e ".[dev]"
+
+# Download the Amazon reviews + products CSVs into data/.
+# Change the filename if your ingestion script is named differently.
+ingest:
+	$(PY) ingestion.py
+
+# Launch Jupyter Lab for exploring the data.
+explore:
+	$(PY) -m jupyter lab
+
+# Run the test suite.
 test:
-	pytest -q
+	$(PY) -m pytest
 
-lint:
-	ruff check src tests api
-	ruff format --check src tests api
-
-format:
-	ruff check --fix src tests api
-	ruff format src tests api
-
+# Delete the venv and any downloaded data.
+# Warning: this is destructive — everything in data/ goes.
 clean:
-	rm -rf .pytest_cache .ruff_cache build dist *.egg-info
-	rm -rf mlruns mlartifacts
-	find . -type d -name "__pycache__" -exec rm -rf {} +
-
-run-api:
-	uvicorn api.main:app --reload --host 0.0.0.0 --port 8000
-
-run-dashboard:
-	streamlit run src/dashboard/app.py
+	rm -rf $(VENV)
+	rm -f data/*.csv data/*.parquet
