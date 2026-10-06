@@ -15,7 +15,7 @@ data/
 
 ### Notebooks (just for testing)
 .ipynb_checkpoints/
-*.ipynb
+#*.ipynb
 
 ### Configuration & Secrets
 config/db_config.json
